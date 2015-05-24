@@ -120,13 +120,15 @@ class RedirectedText(tk.Text):
 
 
 class HelpBindings(tk.Toplevel):
-    def __init__(self, parent=None):
+    def __init__(self, config, parent=None):
         tk.Toplevel.__init__(self, parent)
         self.title("Help | Bindings")
 
         import bindings
 
-        msg = tk.Text(self, width=80, wrap=tk.NONE)
+        msg = tk.Text(self, width=80, wrap=tk.NONE,
+                foreground=config.foreground_color,
+                background=config.background_color)
         msg.insert(tk.END, bindings.description)
         msg.config(state=tk.DISABLED)
         msg.pack()
@@ -223,7 +225,8 @@ class NotesList(tk.Frame):
             font=f,
             yscrollcommand=yscrollbar.set,
             undo=True,
-            background=config.background_color)
+            background=config.background_color, 
+            foreground=config.foreground_color)
         # change default font at runtime with:
         #text.config(font=f)
 
@@ -234,7 +237,7 @@ class NotesList(tk.Frame):
         # tags for all kinds of styling ############################
         ############################################################
 
-        self.text.tag_config("selected", background="light blue")
+        self.text.tag_config("selected", background=config.select_background_color)
 
         self.text.tag_config("pinned", foreground="dark gray")
 
@@ -980,6 +983,8 @@ class View(utils.SubjectMixin):
                 self.config.list_font_family,
                 self.config.list_font_size,
                 utils.KeyValueObject(background_color=self.config.background_color,
+                    foreground_color=self.config.foreground_color,
+                    select_background_color=self.config.select_background_color,
                     layout=self.config.layout,
                     print_columns=self.config.print_columns))
             self.notes_list.pack(fill=tk.BOTH, expand=1)
@@ -1004,6 +1009,7 @@ class View(utils.SubjectMixin):
                 font_family,
                 self.config.list_font_size,
                 utils.KeyValueObject(background_color=self.config.background_color,
+                    select_foreground_color=self.config.foreground_color,
                     layout=self.config.layout,
                     print_columns=self.config.print_columns))
             self.notes_list.pack(fill=tk.X, expand=1)
@@ -1042,7 +1048,8 @@ class View(utils.SubjectMixin):
                                   font=f, tabs=(4 * f.measure(0), 'left'), tabstyle='wordprocessor',
                                   yscrollcommand=yscrollbar.set,
                                   undo=True,
-                                  background=self.config.background_color)
+                                  background=self.config.background_color,
+                                  foreground=self.config.foreground_color)
             # change default font at runtime with:
             text.config(font=f)
 
@@ -1145,7 +1152,7 @@ class View(utils.SubjectMixin):
             parent=self.root)
 
     def cmd_help_bindings(self):
-        h = HelpBindings()
+        h = HelpBindings(self.config)
         self.root.wait_window(h)
 
     def cmd_rest(self, event=None):

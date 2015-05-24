@@ -94,7 +94,9 @@ class Config:
                     'list_font_size': '10',
                     'layout': 'horizontal',
                     'print_columns': '0',
-                    'background_color': 'white',
+                    'background_color': '#073642',
+                    'foreground_color': '#eee8d5',
+                    'select_background_color' : 'blue',
                     'sn_username': '',
                     'sn_password': '',
                     'simplenote_sync': '1',
@@ -152,6 +154,8 @@ class Config:
         self.print_columns = cp.getint(cfg_sec, 'print_columns')
 
         self.background_color = cp.get(cfg_sec, 'background_color')
+        self.foreground_color = cp.get(cfg_sec, 'foreground_color')
+        self.select_background_color = cp.get(cfg_sec, 'select_background_color')
 
         self.rest_css_path = cp.get(cfg_sec, 'rest_css_path')
         self.debug = cp.get(cfg_sec, 'debug')
